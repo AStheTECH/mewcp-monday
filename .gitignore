@@ -14,3 +14,4 @@ graph_schema.json
 main.py
 pyproject.toml
 uv.lock
+get_token.py
