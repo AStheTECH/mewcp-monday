@@ -16,7 +16,7 @@ logger = logging.getLogger("monday-mcp-server")
 backend = HeaderCredentialBackend()
 mcp = FastMCP(
     "MewCP Monday.com MCP Server",
-    middleware=[CredentialMiddleware(backend, "static")],
+    middleware=[CredentialMiddleware(backend, "oauth")],
 )
 register_tools(mcp)
 
