@@ -3,12 +3,12 @@
   "phase_schema_base": true,
   "phase_helpers": false,
   "tool_groups": {
-    "boards": false,
-    "items": false,
-    "updates": false,
-    "activity_logs": false,
-    "docs": false,
-    "system": false
+    "boards": true,
+    "items": true,
+    "updates": true,
+    "activity_logs": true,
+    "docs": true,
+    "system": true
   },
   "phase_schema_cleanup": false,
   "phase_init": false,
