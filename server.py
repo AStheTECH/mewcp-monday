@@ -6,9 +6,9 @@ import logging
 from fastmcp import FastMCP
 from fastmcp_credentials import CredentialMiddleware, HeaderCredentialBackend
 
-from monday.cli import parse_args
-from monday.config import configure_logging
-from monday.tools import register_tools
+from monday_mcp.cli import parse_args
+from monday_mcp.config import configure_logging
+from monday_mcp.tools import register_tools
 
 configure_logging()
 logger = logging.getLogger("monday-mcp-server")
