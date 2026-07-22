@@ -2,6 +2,7 @@ import logging
 from pydantic import Field
 from fastmcp import FastMCP
 from typing import List
+import json
 from .schemas import (
     FetchBoardsQueryParams,
     FetchItemsQueryParams,
@@ -376,6 +377,21 @@ def fetch_items_by_id(ids: List[int | str] = Field(..., description="list of ids
     except Exception as exc:
         logging.error(f"Error fetching items by ids: {exc}", exc_info=True)
         return {"error": str(exc)}
+
+@mcp.tool(
+    name="monday_health_check",
+    description="Check server readiness and basic connectivity.",
+)
+def health_check() -> str:
+    """Health check endpoint."""
+    return json.dumps(
+        {
+            "status": "ok",
+            "server": "Monday.com MCP Server",
+            "type": "third-party integration",
+            "auth_required": "oauth token required",
+        }
+    )
 
 
 
