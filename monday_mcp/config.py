@@ -1,8 +1,23 @@
+"""Configuration for MewCP Monday MCP Server."""
+
 import logging
+import os
+
+SERVER_VERSION = "v1.0.0"
+BREAKING_CHANGES: list[dict] = []
+
 
 def configure_logging() -> None:
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[logging.StreamHandler()],
-    )
+    log_level = os.environ.get("LOG_LEVEL", "INFO").upper()
+    try:
+        from pythonjsonlogger import jsonlogger
+        handler = logging.StreamHandler()
+        handler.setFormatter(
+            jsonlogger.JsonFormatter(fmt="%(asctime)s %(name)s %(levelname)s %(message)s")
+        )
+    except ImportError:
+        handler = logging.StreamHandler()
+    root = logging.getLogger()
+    root.handlers.clear()
+    root.addHandler(handler)
+    root.setLevel(log_level)
