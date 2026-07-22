@@ -1,0 +1,20 @@
+{
+  "phase_infra": false,
+  "phase_schema_base": false,
+  "phase_helpers": false,
+  "tool_groups": {
+    "boards": false,
+    "items": false,
+    "updates": false,
+    "activity_logs": false,
+    "docs": false,
+    "system": false
+  },
+  "phase_schema_cleanup": false,
+  "phase_init": false,
+  "phase_server": false,
+  "phase_manifest": false,
+  "validation_rounds": 0,
+  "validation_passed": false,
+  "readme": false
+}
