@@ -1,0 +1,1348 @@
+{
+  "manifest_version": 1,
+  "server": {
+    "name": "mewcp-monday",
+    "package": "monday_mcp",
+    "auth": "oauth",
+    "version": "v1.0.0",
+    "api_base": null
+  },
+  "tools": {
+    "groups": {
+      "activity_logs": {
+        "file": "activity_logs_tools.py",
+        "doc_source": "",
+        "register_fn": "register_activity_logs_tools",
+        "tools": {
+          "fetch_activity_logs_from_board": {
+            "endpoint": "SDK monday_sdk.activity_logs.fetch_activity_logs_from_board",
+            "description": "Fetch a page of activity logs.",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "board_ids",
+                "type": "int",
+                "required": true,
+                "description": "Board Id"
+              },
+              {
+                "name": "page",
+                "type": "int",
+                "required": true,
+                "description": "Page number to get, starting at 1."
+              },
+              {
+                "name": "limit",
+                "type": "int",
+                "required": true,
+                "description": "Number of items to get, the default is 25."
+              },
+              {
+                "name": "from_date",
+                "type": "str",
+                "required": true,
+                "description": "datetime in the format YYYY-MM-DDTHH:MM:SSZ"
+              },
+              {
+                "name": "to_date",
+                "type": "str",
+                "required": true,
+                "description": "datetime in the format YYYY-MM-DDTHH:MM:SSZ"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "account_id",
+                "type": "str"
+              },
+              {
+                "name": "created_at",
+                "type": "str"
+              },
+              {
+                "name": "data",
+                "type": "str"
+              },
+              {
+                "name": "entity",
+                "type": "str"
+              },
+              {
+                "name": "event",
+                "type": "str"
+              },
+              {
+                "name": "user_id",
+                "type": "str"
+              }
+            ],
+            "schema": {
+              "data": "ActivityLogListData",
+              "result": "ActivityLogListResult"
+            }
+          },
+          "fetch_all_activity_logs_from_board": {
+            "endpoint": "SDK monday_sdk.activity_logs.fetch_all_activity_logs_from_board",
+            "description": "Fetch all activity logs with automatic pagination and optional event filtering.",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "board_ids",
+                "type": "int",
+                "required": true,
+                "description": "Board Id"
+              },
+              {
+                "name": "from_date",
+                "type": "str",
+                "required": true,
+                "description": "datetime in the format YYYY-MM-DDTHH:MM:SSZ"
+              },
+              {
+                "name": "to_date",
+                "type": "str",
+                "required": true,
+                "description": "datetime in the format YYYY-MM-DDTHH:MM:SSZ"
+              },
+              {
+                "name": "limit",
+                "type": "int",
+                "required": true,
+                "description": "Number of items to get, the default is 25."
+              },
+              {
+                "name": "events_filter",
+                "type": "list[str]",
+                "required": true,
+                "description": "Filter activity logs by specific event types"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "account_id",
+                "type": "str"
+              },
+              {
+                "name": "created_at",
+                "type": "str"
+              },
+              {
+                "name": "data",
+                "type": "str"
+              },
+              {
+                "name": "entity",
+                "type": "str"
+              },
+              {
+                "name": "event",
+                "type": "str"
+              },
+              {
+                "name": "user_id",
+                "type": "str"
+              }
+            ],
+            "schema": {
+              "data": "ActivityLogListData",
+              "result": "ActivityLogListResult"
+            }
+          }
+        }
+      },
+      "boards": {
+        "file": "boards_tools.py",
+        "doc_source": "",
+        "register_fn": "register_boards_tools",
+        "tools": {
+          "fetch_boards": {
+            "endpoint": "SDK monday_sdk.boards.fetch_boards",
+            "description": "Query boards with optional filters.",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "limit",
+                "type": "int",
+                "required": false,
+                "description": "Number of boards to return."
+              },
+              {
+                "name": "page",
+                "type": "int | None",
+                "required": false,
+                "description": "Page number for pagination."
+              },
+              {
+                "name": "ids",
+                "type": "list[int] | None",
+                "required": false,
+                "description": "Filter by specific board IDs."
+              },
+              {
+                "name": "board_kind",
+                "type": "BoardKind | None",
+                "required": false,
+                "description": "Filter by board type (public, private, share)."
+              },
+              {
+                "name": "state",
+                "type": "BoardState | None",
+                "required": false,
+                "description": "Filter by state (active, archived, deleted, all)."
+              },
+              {
+                "name": "order_by",
+                "type": "BoardsOrderBy | None",
+                "required": false,
+                "description": "Sort order (created_at or used_at)."
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "boards",
+                "type": "list[BoardData]"
+              },
+              {
+                "name": "boards[].id",
+                "type": "str | None"
+              },
+              {
+                "name": "boards[].name",
+                "type": "str | None"
+              },
+              {
+                "name": "boards[].updated_at",
+                "type": "str | None"
+              },
+              {
+                "name": "boards[].groups",
+                "type": "list[GroupData] | None"
+              },
+              {
+                "name": "boards[].columns",
+                "type": "list[ColumnData] | None"
+              }
+            ],
+            "schema": {
+              "data": "BoardListData",
+              "result": "BoardListResult"
+            }
+          },
+          "fetch_boards_by_id": {
+            "endpoint": "SDK monday_sdk.boards.fetch_boards_by_id",
+            "description": "Fetch a single board by ID.",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "str",
+                "required": true,
+                "description": "Board Id"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str | None"
+              },
+              {
+                "name": "name",
+                "type": "str | None"
+              },
+              {
+                "name": "updated_at",
+                "type": "str | None"
+              },
+              {
+                "name": "groups",
+                "type": "list[GroupData] | None"
+              },
+              {
+                "name": "columns",
+                "type": "list[ColumnData] | None"
+              }
+            ],
+            "schema": {
+              "data": "BoardData",
+              "result": "BoardResult"
+            }
+          },
+          "fetch_all_items_by_board_id": {
+            "endpoint": "SDK monday_sdk.boards.fetch_all_items_by_board_id",
+            "description": "Fetch all items with automatic pagination.",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The board ID to fetch items from."
+              },
+              {
+                "name": "query_params",
+                "type": "Mapping[str, Any] | None",
+                "required": false,
+                "description": "Query Params for filtering"
+              },
+              {
+                "name": "limit",
+                "type": "int | None",
+                "required": false,
+                "description": "Number of items per page"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "items",
+                "type": "list[ItemData]"
+              },
+              {
+                "name": "items[].id",
+                "type": "str | None"
+              },
+              {
+                "name": "items[].state",
+                "type": "str | None"
+              },
+              {
+                "name": "items[].name",
+                "type": "str | None"
+              },
+              {
+                "name": "items[].updated_at",
+                "type": "str | None"
+              },
+              {
+                "name": "items[].group",
+                "type": "GroupData | None"
+              },
+              {
+                "name": "items[].subitems",
+                "type": "list[ItemData] | None"
+              },
+              {
+                "name": "items[].parent_item",
+                "type": "ItemData | None"
+              },
+              {
+                "name": "items[].column_values",
+                "type": "list[ColumnValueData] | None"
+              }
+            ],
+            "schema": {
+              "data": "ItemListData",
+              "result": "ItemListResult"
+            }
+          },
+          "fetch_item_by_board_id_by_update_date": {
+            "endpoint": "SDK monday_sdk.boards.fetch_item_by_board_id_by_update_date",
+            "description": "Fetch items modified within a date range.",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The board ID to fetch items from."
+              },
+              {
+                "name": "updated_after",
+                "type": "str",
+                "required": true,
+                "description": "datetime in the format YYYY-MM-DDTHH:MM:SSZ"
+              },
+              {
+                "name": "updated_before",
+                "type": "str",
+                "required": true,
+                "description": "datetime in the format YYYY-MM-DDTHH:MM:SSZ"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "items",
+                "type": "list[ItemData]"
+              },
+              {
+                "name": "items[].id",
+                "type": "str | None"
+              },
+              {
+                "name": "items[].state",
+                "type": "str | None"
+              },
+              {
+                "name": "items[].name",
+                "type": "str | None"
+              },
+              {
+                "name": "items[].updated_at",
+                "type": "str | None"
+              },
+              {
+                "name": "items[].group",
+                "type": "GroupData | None"
+              },
+              {
+                "name": "items[].subitems",
+                "type": "list[ItemData] | None"
+              },
+              {
+                "name": "items[].parent_item",
+                "type": "ItemData | None"
+              },
+              {
+                "name": "items[].column_values",
+                "type": "list[ColumnValueData] | None"
+              }
+            ],
+            "schema": {
+              "data": "ItemListData",
+              "result": "ItemListResult"
+            }
+          },
+          "fetch_columns_by_board_id": {
+            "endpoint": "SDK monday_sdk.boards.fetch_columns_by_board_id",
+            "description": "Useful for incremental syncing \u2014 only fetch items modified within a date range.",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "str",
+                "required": true,
+                "description": "board id"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str | None"
+              },
+              {
+                "name": "name",
+                "type": "str | None"
+              },
+              {
+                "name": "updated_at",
+                "type": "str | None"
+              },
+              {
+                "name": "groups",
+                "type": "list[GroupData] | None"
+              },
+              {
+                "name": "columns",
+                "type": "list[ColumnData] | None"
+              }
+            ],
+            "schema": {
+              "data": "BoardData",
+              "result": "BoardResult"
+            }
+          }
+        }
+      },
+      "docs": {
+        "file": "docs_tools.py",
+        "doc_source": "",
+        "register_fn": "register_docs_tools",
+        "tools": {
+          "get_document_with_blocks": {
+            "endpoint": "SDK monday_sdk.docs.get_document_with_blocks",
+            "description": "Fetch a document with all blocks (auto-paginates).",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "doc_id",
+                "type": "str",
+                "required": true,
+                "description": "doc id"
+              }
+            ],
+            "response_fields": [
+              "id",
+              "created_at",
+              "updated_at",
+              "created_by.id",
+              "created_by.name",
+              "doc_folder_id",
+              "doc_kind",
+              "name",
+              "url",
+              "workspace.name",
+              "workspace_id",
+              "object_id",
+              "settings",
+              "blocks[].type",
+              "blocks[].content",
+              "blocks[].position",
+              "blocks[].updated_at",
+              "blocks[].id",
+              "blocks[].parent_block_id"
+            ],
+            "schema": {
+              "data": "DocumentData",
+              "result": "DocumentResult"
+            }
+          }
+        }
+      },
+      "items": {
+        "file": "items_tools.py",
+        "doc_source": "",
+        "register_fn": "register_items_tools",
+        "tools": {
+          "create_item": {
+            "endpoint": "SDK monday_sdk.items.create_item",
+            "description": "Creating an Item",
+            "tier": "CREATE",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The board ID to fetch items from."
+              },
+              {
+                "name": "group_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The board ID to fetch items from."
+              },
+              {
+                "name": "item_name",
+                "type": "str",
+                "required": true,
+                "description": "Name of Item"
+              },
+              {
+                "name": "column_values",
+                "type": "dict[str, Any] | None",
+                "required": false,
+                "description": "The column values of the new item."
+              },
+              {
+                "name": "create_labels_if_missing",
+                "type": "bool | None",
+                "required": false,
+                "description": "Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              }
+            ],
+            "schema": {
+              "data": "CreatedItemData",
+              "result": "CreatedItemResult"
+            }
+          },
+          "create_subitem": {
+            "endpoint": "SDK monday_sdk.items.create_subitem",
+            "description": "Create a subitem",
+            "tier": "CREATE",
+            "params": [
+              {
+                "name": "parent_item_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The parent item's unique identifier."
+              },
+              {
+                "name": "subitem_name",
+                "type": "str",
+                "required": true,
+                "description": "The new item's name."
+              },
+              {
+                "name": "column_values",
+                "type": "dict[str, Any] | None",
+                "required": false,
+                "description": "The column values of the new item."
+              },
+              {
+                "name": "create_labels_if_missing",
+                "type": "bool | None",
+                "required": false,
+                "description": "Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "name",
+                "type": "str"
+              },
+              {
+                "name": "column_values",
+                "type": "list[{id, text}]"
+              },
+              {
+                "name": "board",
+                "type": "{id, name}"
+              }
+            ],
+            "schema": {
+              "data": "SubitemData",
+              "result": "SubitemResult"
+            }
+          },
+          "change_simple_column_value": {
+            "endpoint": "SDK monday_sdk.items.change_simple_column_value",
+            "description": "Change an item's column with simple value.",
+            "tier": "UPDATE",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The board's unique identifier."
+              },
+              {
+                "name": "item_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The item's unique identifier."
+              },
+              {
+                "name": "column_id",
+                "type": "str",
+                "required": true,
+                "description": "The column's unique identifier."
+              },
+              {
+                "name": "value",
+                "type": "str",
+                "required": true,
+                "description": "The new simple value of the column (pass null to empty the column)."
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              }
+            ],
+            "schema": {
+              "data": "ItemIdData",
+              "result": "ItemIdResult"
+            }
+          },
+          "change_status_column_value": {
+            "endpoint": "SDK monday_sdk.items.change_status_column_value",
+            "description": "Set a status column's label.",
+            "tier": "UPDATE",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The board's unique identifier."
+              },
+              {
+                "name": "item_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The item's unique identifier."
+              },
+              {
+                "name": "column_id",
+                "type": "str",
+                "required": true,
+                "description": "The column's unique identifier."
+              },
+              {
+                "name": "value",
+                "type": "str",
+                "required": true,
+                "description": "The new simple value of the column (pass null to empty the column)."
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "name",
+                "type": "str"
+              },
+              {
+                "name": "column_values",
+                "type": "list[{id, text, value}]"
+              }
+            ],
+            "schema": {
+              "data": "ColumnChangeData",
+              "result": "ColumnChangeResult"
+            }
+          },
+          "change_date_column_value": {
+            "endpoint": "SDK monday_sdk.items.change_date_column_value",
+            "description": "Set a date column's value (pass a datetime object)",
+            "tier": "UPDATE",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The board's unique identifier."
+              },
+              {
+                "name": "item_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The item's unique identifier."
+              },
+              {
+                "name": "column_id",
+                "type": "str",
+                "required": true,
+                "description": "The column's unique identifier."
+              },
+              {
+                "name": "timestamp",
+                "type": "datetime",
+                "required": true,
+                "description": "The new date value"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "name",
+                "type": "str"
+              },
+              {
+                "name": "column_values",
+                "type": "list[{id, text, value}]"
+              }
+            ],
+            "schema": {
+              "data": "ColumnChangeData",
+              "result": "ColumnChangeResult"
+            }
+          },
+          "change_custom_column_value": {
+            "endpoint": "SDK monday_sdk.items.change_custom_column_value",
+            "description": "Set any column's value using a JSON dict.",
+            "tier": "UPDATE",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The board's unique identifier."
+              },
+              {
+                "name": "item_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The item's unique identifier."
+              },
+              {
+                "name": "column_id",
+                "type": "str",
+                "required": true,
+                "description": "The column's unique identifier."
+              },
+              {
+                "name": "value",
+                "type": "dict[str, Any]",
+                "required": true,
+                "description": "The new value of the column as a JSON dict (e.g. {'checked': True} for a checkbox)."
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "name",
+                "type": "str"
+              },
+              {
+                "name": "column_values",
+                "type": "list[{id, text, value}]"
+              }
+            ],
+            "schema": {
+              "data": "ColumnChangeData",
+              "result": "ColumnChangeResult"
+            }
+          },
+          "change_multiple_column_values": {
+            "endpoint": "SDK monday_sdk.items.change_multiple_column_values",
+            "description": "Set multiple column values at once.",
+            "tier": "UPDATE",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The board's unique identifier."
+              },
+              {
+                "name": "item_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The item's unique identifier."
+              },
+              {
+                "name": "column_values",
+                "type": "dict[str, Any]",
+                "required": true,
+                "description": "Column values in a json format"
+              },
+              {
+                "name": "create_labels_if_missing",
+                "type": "bool | None",
+                "required": false,
+                "description": "Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "name",
+                "type": "str"
+              },
+              {
+                "name": "column_values",
+                "type": "list[{id, text}]"
+              }
+            ],
+            "schema": {
+              "data": "ColumnValuesChangeData",
+              "result": "ColumnValuesChangeResult"
+            }
+          },
+          "move_item_to_group": {
+            "endpoint": "SDK monday_sdk.items.move_item_to_group",
+            "description": "Move an item to a different group.",
+            "tier": "UPDATE",
+            "params": [
+              {
+                "name": "item_id",
+                "type": "int",
+                "required": true,
+                "description": "The item's unique identifier."
+              },
+              {
+                "name": "group_id",
+                "type": "str",
+                "required": true,
+                "description": "The group's unique identifier."
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              }
+            ],
+            "schema": {
+              "data": "ItemIdData",
+              "result": "ItemIdResult"
+            }
+          },
+          "archive_item_by_id": {
+            "endpoint": "SDK monday_sdk.items.archive_item_by_id",
+            "description": "Archives an item, removing it from active board views. Unlike delete, this is reversible \u2014 the item can be restored from Monday.com's archive.",
+            "tier": "DELETE",
+            "params": [
+              {
+                "name": "item_id",
+                "type": "int",
+                "required": true,
+                "description": "The item's unique identifier."
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              }
+            ],
+            "schema": {
+              "data": "ItemIdData",
+              "result": "ItemIdResult"
+            }
+          },
+          "delete_item_by_id": {
+            "endpoint": "SDK monday_sdk.items.delete_item_by_id",
+            "description": "DESTRUCTIVE \u2014 permanently deletes the item and all its data (column values, subitems, updates). Irreversible; requires explicit user confirmation before calling.",
+            "tier": "DELETE",
+            "params": [
+              {
+                "name": "item_id",
+                "type": "int",
+                "required": true,
+                "description": "The item's unique identifier."
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              }
+            ],
+            "schema": {
+              "data": "ItemIdData",
+              "result": "ItemIdResult"
+            }
+          },
+          "upload_file_to_column": {
+            "endpoint": "SDK monday_sdk.items.upload_file_to_column",
+            "description": "Upload a file to a file column.",
+            "tier": "CREATE",
+            "params": [
+              {
+                "name": "item_id",
+                "type": "int | str",
+                "required": true,
+                "description": "The item's unique identifier."
+              },
+              {
+                "name": "column_id",
+                "type": "str",
+                "required": true,
+                "description": "The column's unique identifier."
+              },
+              {
+                "name": "file_path",
+                "type": "str",
+                "required": true,
+                "description": "The path of the file on the user's system"
+              },
+              {
+                "name": "mimetype",
+                "type": "str | None",
+                "required": false,
+                "description": "The mimetype of the file getting uploaded for example: application/json"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "name",
+                "type": "str"
+              },
+              {
+                "name": "url",
+                "type": "str"
+              },
+              {
+                "name": "file_extension",
+                "type": "str"
+              },
+              {
+                "name": "file_size",
+                "type": "int"
+              }
+            ],
+            "schema": {
+              "data": "FileUploadData",
+              "result": "FileUploadResult"
+            }
+          },
+          "fetch_items_by_column_value": {
+            "endpoint": "SDK monday_sdk.items.fetch_items_by_column_value",
+            "description": "Fetch items by column value",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "int | str",
+                "required": true,
+                "description": "Board Id"
+              },
+              {
+                "name": "column_id",
+                "type": "str",
+                "required": true,
+                "description": "column header"
+              },
+              {
+                "name": "value",
+                "type": "str",
+                "required": true,
+                "description": "Fetch column by this value"
+              },
+              {
+                "name": "limit",
+                "type": "int | None",
+                "required": false,
+                "description": "Limit on number of rows to be fetched"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "cursor",
+                "type": "str"
+              },
+              {
+                "name": "items",
+                "type": "list[Item]"
+              }
+            ],
+            "schema": {
+              "data": "ItemPageData",
+              "result": "ItemPageResult"
+            }
+          },
+          "fetch_items_by_id": {
+            "endpoint": "SDK monday_sdk.items.fetch_items_by_id",
+            "description": "Fetch items by a list of ids",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "ids",
+                "type": "list[int | str]",
+                "required": true,
+                "description": "list of ids for the items to be fetched"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "items",
+                "type": "list[Item]"
+              }
+            ],
+            "schema": {
+              "data": "ItemListData",
+              "result": "ItemListResult"
+            }
+          }
+        }
+      },
+      "system": {
+        "file": "system_tools.py",
+        "doc_source": "",
+        "register_fn": "register_system_tools",
+        "tools": {
+          "monday_health_check": {
+            "endpoint": "internal (no external call)",
+            "description": "Check server readiness and basic connectivity.",
+            "tier": "GET",
+            "params": [],
+            "response_fields": [
+              {
+                "name": "status",
+                "type": "str"
+              },
+              {
+                "name": "server",
+                "type": "str"
+              },
+              {
+                "name": "type",
+                "type": "str"
+              },
+              {
+                "name": "auth_required",
+                "type": "str"
+              }
+            ],
+            "schema": {
+              "data": "HealthCheckData",
+              "result": "HealthCheckResult"
+            }
+          }
+        }
+      },
+      "updates": {
+        "file": "updates_tools.py",
+        "doc_source": "",
+        "register_fn": "register_updates_tools",
+        "tools": {
+          "create_update": {
+            "endpoint": "SDK monday_sdk.updates.create_update",
+            "description": "Create an update (comment) on an item.",
+            "tier": "CREATE",
+            "params": [
+              {
+                "name": "item_id",
+                "type": "int",
+                "required": true,
+                "description": "The item's unique identifier."
+              },
+              {
+                "name": "update_value",
+                "type": "str",
+                "required": true,
+                "description": "Comments to be added to the item"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              }
+            ],
+            "schema": {
+              "data": "UpdateIdData",
+              "result": "UpdateIdResult"
+            }
+          },
+          "delete_update": {
+            "endpoint": "SDK monday_sdk.updates.delete_update",
+            "description": "DESTRUCTIVE \u2014 REQUIRES EXPLICIT USER CONFIRMATION BEFORE CALLING. Permanently deletes an update (comment) from an item; irreversible.",
+            "tier": "DELETE",
+            "params": [
+              {
+                "name": "item_id",
+                "type": "int",
+                "required": true,
+                "description": "The item's unique identifier."
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              }
+            ],
+            "schema": {
+              "data": "UpdateIdData",
+              "result": "UpdateIdResult"
+            }
+          },
+          "fetch_updates": {
+            "endpoint": "SDK monday_sdk.updates.fetch_updates",
+            "description": "Fetch updates with pagination.",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "limit",
+                "type": "int",
+                "required": true,
+                "description": "Number of items to get, the default is 25."
+              },
+              {
+                "name": "page",
+                "type": "int",
+                "required": true,
+                "description": "Page number to get, starting at 1."
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "body",
+                "type": "str"
+              }
+            ],
+            "schema": {
+              "data": "SimpleUpdateListData",
+              "result": "SimpleUpdateListResult"
+            }
+          },
+          "fetch_updates_for_item": {
+            "endpoint": "SDK monday_sdk.updates.fetch_updates_for_item",
+            "description": "Fetch updates for a specific item.",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "item_id",
+                "type": "int",
+                "required": true,
+                "description": "The item's unique identifier."
+              },
+              {
+                "name": "limit",
+                "type": "int",
+                "required": true,
+                "description": "Number of items to get, the default is 25."
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "body",
+                "type": "str"
+              },
+              {
+                "name": "created_at",
+                "type": "str"
+              },
+              {
+                "name": "updated_at",
+                "type": "str"
+              },
+              {
+                "name": "creator",
+                "type": "object"
+              },
+              {
+                "name": "assets",
+                "type": "list"
+              },
+              {
+                "name": "replies",
+                "type": "list"
+              }
+            ],
+            "schema": {
+              "data": "ItemUpdateListData",
+              "result": "ItemUpdateListResult"
+            }
+          },
+          "fetch_board_updates": {
+            "endpoint": "SDK monday_sdk.updates.fetch_board_updates",
+            "description": "Fetch all updates from a board with date filtering.",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "board_ids",
+                "type": "int",
+                "required": true,
+                "description": "Board Id"
+              },
+              {
+                "name": "updated_after",
+                "type": "str",
+                "required": true,
+                "description": "datetime in the format YYYY-MM-DDTHH:MM:SSZ"
+              },
+              {
+                "name": "updated_before",
+                "type": "str",
+                "required": true,
+                "description": "datetime in the format YYYY-MM-DDTHH:MM:SSZ"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "text_body",
+                "type": "str"
+              },
+              {
+                "name": "item_id",
+                "type": "str"
+              },
+              {
+                "name": "created_at",
+                "type": "str"
+              },
+              {
+                "name": "updated_at",
+                "type": "str"
+              },
+              {
+                "name": "creator",
+                "type": "object"
+              }
+            ],
+            "schema": {
+              "data": "UpdateListData",
+              "result": "UpdateListResult"
+            }
+          },
+          "fetch_board_updates_page": {
+            "endpoint": "SDK monday_sdk.updates.fetch_board_updates_page",
+            "description": "Fetch a single page of board updates.",
+            "tier": "GET",
+            "params": [
+              {
+                "name": "board_id",
+                "type": "int | str",
+                "required": true,
+                "description": "Board Id"
+              },
+              {
+                "name": "limit",
+                "type": "int",
+                "required": true,
+                "description": "Number of items to get, the default is 25."
+              },
+              {
+                "name": "page",
+                "type": "int",
+                "required": true,
+                "description": "Page number to get, starting at 1."
+              },
+              {
+                "name": "from_date",
+                "type": "str",
+                "required": true,
+                "description": "datetime in the format YYYY-MM-DDTHH:MM:SSZ"
+              },
+              {
+                "name": "to_date",
+                "type": "str",
+                "required": true,
+                "description": "datetime in the format YYYY-MM-DDTHH:MM:SSZ"
+              }
+            ],
+            "response_fields": [
+              {
+                "name": "id",
+                "type": "str"
+              },
+              {
+                "name": "text_body",
+                "type": "str"
+              },
+              {
+                "name": "item_id",
+                "type": "str"
+              },
+              {
+                "name": "created_at",
+                "type": "str"
+              },
+              {
+                "name": "updated_at",
+                "type": "str"
+              },
+              {
+                "name": "creator",
+                "type": "object"
+              }
+            ],
+            "schema": {
+              "data": "UpdateListData",
+              "result": "UpdateListResult"
+            }
+          }
+        }
+      }
+    }
+  },
+  "resources": {},
+  "prompts": {}
+}
