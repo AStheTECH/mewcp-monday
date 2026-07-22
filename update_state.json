@@ -13,7 +13,7 @@
   "phase_schema_cleanup": true,
   "phase_init": true,
   "phase_server": true,
-  "phase_manifest": false,
+  "phase_manifest": true,
   "validation_rounds": 0,
   "validation_passed": false,
   "readme": false
