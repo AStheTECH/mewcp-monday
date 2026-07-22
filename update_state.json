@@ -1,6 +1,6 @@
 {
-  "phase_infra": false,
-  "phase_schema_base": false,
+  "phase_infra": true,
+  "phase_schema_base": true,
   "phase_helpers": false,
   "tool_groups": {
     "boards": false,
