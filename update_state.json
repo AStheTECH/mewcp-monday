@@ -10,8 +10,8 @@
     "docs": true,
     "system": true
   },
-  "phase_schema_cleanup": false,
-  "phase_init": false,
+  "phase_schema_cleanup": true,
+  "phase_init": true,
   "phase_server": false,
   "phase_manifest": false,
   "validation_rounds": 0,
