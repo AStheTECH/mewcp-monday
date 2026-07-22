@@ -45,54 +45,60 @@ class FetchBoardsQueryParams(BaseModel):
 
 class FetchItemsQueryParams(BaseModel):
     board_id: int | str = Field(..., description="The board ID to fetch items from.")
-    query_params: Optional[Mapping[str, Any]] = Field(..., description="Query Params for filtering")
-    limit: Optional[int] = Field(..., description="Number of items per page")
+    query_params: Optional[Mapping[str, Any]] = Field(default=None, description="Query Params for filtering")
+    limit: Optional[int] = Field(default=None, description="Number of items per page")
 
 class FetchItemsByUpdateDateQueryParams(BaseModel):
     board_id: int | str = Field(..., description="The board ID to fetch items from.")
-    update_after: str = Field(..., description="datetime in the format YYYY-MM-DDTHH:MM:SSZ")
-    update_before: str = Field(..., description="datetime in the format YYYY-MM-DDTHH:MM:SSZ")
+    updated_after: str = Field(..., description="datetime in the format YYYY-MM-DDTHH:MM:SSZ")
+    updated_before: str = Field(..., description="datetime in the format YYYY-MM-DDTHH:MM:SSZ")
 
 class CreateItemQueryParams(BaseModel):
     board_id: int | str = Field(..., description="The board ID to fetch items from.")
     group_id: int | str = Field(..., description="The board ID to fetch items from.")
     item_name: str = Field(..., description="Name of Item")
-    column_values: Optional[Dict[str, str]] = Field(..., description="The column values of the new item.")
-    create_labels_if_missing: Optional[bool] = Field(..., description="Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)")
+    column_values: Optional[Dict[str, Any]] = Field(default=None, description="The column values of the new item.")
+    create_labels_if_missing: Optional[bool] = Field(default=False, description="Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)")
 
 class CreateSubitemQueryParams(BaseModel):
-    parent_item_id: int = Field(..., description="The parent item's unique identifier.")
+    parent_item_id: int | str = Field(..., description="The parent item's unique identifier.")
     subitem_name: str = Field(..., description="The new item's name.")
-    column_values: str = Field(..., description="The column values of the new item.")
-    create_labels_if_missing: Optional[bool] = Field(..., description="Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)")
+    column_values: Optional[Dict[str, Any]] = Field(default=None, description="The column values of the new item.")
+    create_labels_if_missing: Optional[bool] = Field(default=False, description="Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)")
 
 class ChangeColumnQueryParams(BaseModel):
-    board_id: int = Field(..., description="The board's unique identifier.")
-    item_id: int = Field(..., description="The item's unique identifier.")
-    column_id: int = Field(..., description="The column's unique identifier.")
+    board_id: int | str = Field(..., description="The board's unique identifier.")
+    item_id: int | str = Field(..., description="The item's unique identifier.")
+    column_id: str = Field(..., description="The column's unique identifier.")
     value: str = Field(..., description="The new simple value of the column (pass null to empty the column).")
 
+class ChangeCustomColumnQueryParams(BaseModel):
+    board_id: int | str = Field(..., description="The board's unique identifier.")
+    item_id: int | str = Field(..., description="The item's unique identifier.")
+    column_id: str = Field(..., description="The column's unique identifier.")
+    value: Dict[str, Any] = Field(..., description="The new value of the column as a JSON dict (e.g. {'checked': True} for a checkbox).")
+
 class ChangeDateColumnQueryParams(BaseModel):
-    board_id: int = Field(..., description="The board's unique identifier.")
-    item_id: int = Field(..., description="The item's unique identifier.")
-    column_id: int = Field(..., description="The column's unique identifier.")
+    board_id: int | str = Field(..., description="The board's unique identifier.")
+    item_id: int | str = Field(..., description="The item's unique identifier.")
+    column_id: str = Field(..., description="The column's unique identifier.")
     timestamp: datetime = Field(..., description="The new date value")
 
 class ChangeMultipleColumnQueryParams(BaseModel):
-    board_id: int = Field(..., description="The board's unique identifier.")
-    item_id: int = Field(..., description="The item's unique identifier.")
+    board_id: int | str = Field(..., description="The board's unique identifier.")
+    item_id: int | str = Field(..., description="The item's unique identifier.")
     column_values: Dict[str, Any] = Field(..., description="Column values in a json format")
-    create_labels_if_missing: Optional[bool] = Field(True, description="Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)")
+    create_labels_if_missing: Optional[bool] = Field(default=False, description="Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)")
 
 class MoveItemQueryParams(BaseModel):
     item_id: int = Field(..., description="The item's unique identifier.")
     group_id: str = Field(..., description="The group's unique identifier.")
 
 class UploadFileQueryParams(BaseModel):
-    item_id: int = Field(..., description="The item's unique identifier.")
-    column_id: int = Field(..., description="The column's unique identifier.")
+    item_id: int | str = Field(..., description="The item's unique identifier.")
+    column_id: str = Field(..., description="The column's unique identifier.")
     file_path: str = Field(..., description="The path of the file on the user's system")
-    mimetype: str = Field(..., description="The mimetype of the file getting uploaded for example: application/json")
+    mimetype: Optional[str] = Field(default=None, description="The mimetype of the file getting uploaded for example: application/json")
 
 class UpdateQueryParams(BaseModel):
     item_id: int = Field(..., description="The item's unique identifier.")
@@ -112,7 +118,7 @@ class FetchBoardUpdatesQueryParams(BaseModel):
     updated_before: str = Field(..., description="datetime in the format YYYY-MM-DDTHH:MM:SSZ")
 
 class FetchBoardUpdatestPageQueryParams(BaseModel):
-    board_ids: int = Field(..., description="Board Id")
+    board_id: int | str = Field(..., description="Board Id")
     limit: int = Field(..., description="Number of items to get, the default is 25.")
     page: int = Field(..., description="Page number to get, starting at 1.")
     from_date: str = Field(..., description="datetime in the format YYYY-MM-DDTHH:MM:SSZ")
@@ -133,7 +139,7 @@ class FetchAllActivityLogsQueryParams(BaseModel):
     events_filter: List[str] = Field(..., description="Filter activity logs by specific event types")
 
 class FetchItemsByColumnQueryParams(BaseModel):
-    board_ids: int = Field(..., description="Board Id")
+    board_id: int | str = Field(..., description="Board Id")
     column_id: str = Field(..., description="column header")
     value: str = Field(..., description="Fetch column by this value")
-    limit: int = Field(..., description="Limit on number of rows to be fetched")
+    limit: Optional[int] = Field(default=None, description="Limit on number of rows to be fetched")

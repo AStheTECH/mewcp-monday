@@ -10,6 +10,7 @@ from .schemas import (
     CreateItemQueryParams,
     CreateSubitemQueryParams,
     ChangeColumnQueryParams,
+    ChangeCustomColumnQueryParams,
     ChangeDateColumnQueryParams,
     ChangeMultipleColumnQueryParams,
     MoveItemQueryParams,
@@ -177,7 +178,7 @@ def change_date_column_value(params: ChangeDateColumnQueryParams) -> ApiObjectRe
     name="change_custom_column_value",
     description="Set any column's value using a JSON dict."
 )
-def change_custom_column_value(params: ChangeColumnQueryParams) -> ApiObjectResponse:
+def change_custom_column_value(params: ChangeCustomColumnQueryParams) -> ApiObjectResponse:
     try:
         response = get_client().items.change_custom_column_value(**params.model_dump())
         return response
