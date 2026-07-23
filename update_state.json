@@ -14,7 +14,7 @@
   "phase_init": true,
   "phase_server": true,
   "phase_manifest": true,
-  "validation_rounds": 0,
+  "validation_rounds": 1,
   "validation_passed": false,
   "readme": false
 }
