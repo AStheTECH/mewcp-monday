@@ -25,7 +25,8 @@ def _handle_request_exc(result_class, tlog, exc):
         return result_class(success=False, statusCode=504, retriable=False,
             error=ToolError(code="UPSTREAM_ERROR", message="Read timeout"))
     if isinstance(exc, requests.RequestException):
-        tlog.failure("UPSTREAM_ERROR", str(exc))
+        status = getattr(getattr(exc, "response", None), "status_code", None)
+        tlog.failure("UPSTREAM_ERROR", f"HTTP {status}" if status is not None else "Network error")
         return result_class(success=False, statusCode=503, retriable=True,
             error=ToolError(code="UPSTREAM_ERROR", message=str(exc)))
     if isinstance(exc, FileNotFoundError):
@@ -33,7 +34,7 @@ def _handle_request_exc(result_class, tlog, exc):
         return result_class(success=False, statusCode=400, retriable=False,
             error=ToolError(code="VALIDATION_ERROR", message=str(exc)))
     if isinstance(exc, MondayQueryError):
-        tlog.failure("UPSTREAM_ERROR", str(exc))
+        tlog.failure("UPSTREAM_ERROR", "Monday API returned a GraphQL error")
         return result_class(success=False, statusCode=502, retriable=False,
             error=ToolError(code="UPSTREAM_ERROR", message=str(exc)))
     if isinstance(exc, ValueError):
