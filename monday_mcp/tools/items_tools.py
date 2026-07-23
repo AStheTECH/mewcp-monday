@@ -102,7 +102,11 @@ def register_items_tools(mcp: FastMCP) -> None:
 
     @mcp.tool(
         name="change_simple_column_value",
-        description="Change an item's column with simple value.",
+        description=(
+            "Changes an item's column to a new simple text value. Only this column is changed — "
+            "other columns keep their current value. NOTE: this overwrites the current value — the prior "
+            "value is not preserved by this tool. The response includes the updated item's id."
+        ),
         annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, openWorldHint=True),
     )
     def change_simple_column_value(
@@ -124,14 +128,20 @@ def register_items_tools(mcp: FastMCP) -> None:
 
     @mcp.tool(
         name="change_status_column_value",
-        description="Set a status column's label.",
+        description=(
+            "Sets a status column's label. Only this column is changed — other columns keep their current "
+            "value. NOTE: this overwrites the current label — the prior label is not preserved by this tool. "
+            "The response includes the item's id, name, and column_values as returned by the Monday.com API."
+        ),
         annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, openWorldHint=True),
     )
     def change_status_column_value(
         board_id: int | str = Field(..., description="The board's unique identifier."),
         item_id: int | str = Field(..., description="The item's unique identifier."),
         column_id: str = Field(..., description="The column's unique identifier."),
-        value: str = Field(..., description="The new simple value of the column (pass null to empty the column)."),
+        value: str = Field(
+            ..., description="The status label to set on the column (the exact label text as configured on the board, e.g. 'Done')."
+        ),
     ) -> ColumnChangeResult:
         tlog = ToolLogger(logger, "change_status_column_value")
         try:
@@ -146,7 +156,12 @@ def register_items_tools(mcp: FastMCP) -> None:
 
     @mcp.tool(
         name="change_date_column_value",
-        description="Set a date column's value (pass a datetime object)",
+        description=(
+            "Sets a date column's value (pass a datetime object). Only this column is changed — other "
+            "columns keep their current value. NOTE: this overwrites the current date — the prior date is "
+            "not preserved by this tool. The response includes the item's id, name, and column_values as "
+            "returned by the Monday.com API."
+        ),
         annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, openWorldHint=True),
     )
     def change_date_column_value(
@@ -168,7 +183,12 @@ def register_items_tools(mcp: FastMCP) -> None:
 
     @mcp.tool(
         name="change_custom_column_value",
-        description="Set any column's value using a JSON dict.",
+        description=(
+            "Sets any column's value using a JSON dict. Only this column is changed — other columns keep "
+            "their current value. NOTE: this overwrites the current value — the prior value is not "
+            "preserved by this tool. The response includes the item's id, name, and column_values as "
+            "returned by the Monday.com API."
+        ),
         annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, openWorldHint=True),
     )
     def change_custom_column_value(
@@ -192,7 +212,12 @@ def register_items_tools(mcp: FastMCP) -> None:
 
     @mcp.tool(
         name="change_multiple_column_values",
-        description="Set multiple column values at once.",
+        description=(
+            "Sets multiple column values at once. Only the columns you provide are changed — others keep "
+            "their current value. NOTE: this overwrites the current values — the prior values are not "
+            "preserved by this tool. The response includes the item's id, name, and column_values as "
+            "returned by the Monday.com API."
+        ),
         annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, openWorldHint=True),
     )
     def change_multiple_column_values(
@@ -218,7 +243,11 @@ def register_items_tools(mcp: FastMCP) -> None:
 
     @mcp.tool(
         name="move_item_to_group",
-        description="Move an item to a different group.",
+        description=(
+            "Moves an item to a different group. Only the item's group is changed — other fields keep "
+            "their current value. NOTE: this overwrites the current group — the prior group is not "
+            "preserved by this tool. The response includes the updated item's id."
+        ),
         annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, openWorldHint=True),
     )
     def move_item_to_group(
