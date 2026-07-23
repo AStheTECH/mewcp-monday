@@ -2,7 +2,7 @@ import argparse
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Google MCP Server")
+    parser = argparse.ArgumentParser(description="MewCP Monday.com MCP Server")
     parser.add_argument(
         "-t",
         "--transport",

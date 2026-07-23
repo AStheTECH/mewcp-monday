@@ -132,7 +132,7 @@ def register_boards_tools(mcp: FastMCP) -> None:
 
     @mcp.tool(
         name="fetch_columns_by_board_id",
-        description="Useful for incremental syncing — only fetch items modified within a date range.",
+        description="Fetch the column definitions (id, title, type) for a given board.",
         annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, openWorldHint=True),
     )
     def fetch_columns_by_board_id(
