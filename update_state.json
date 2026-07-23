@@ -1,7 +1,7 @@
 {
   "phase_infra": true,
   "phase_schema_base": true,
-  "phase_helpers": false,
+  "phase_helpers": true,
   "tool_groups": {
     "boards": true,
     "items": true,
