@@ -16,5 +16,5 @@
   "phase_manifest": true,
   "validation_rounds": 2,
   "validation_passed": true,
-  "readme": false
+  "readme": true
 }
